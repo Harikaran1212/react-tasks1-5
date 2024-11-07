@@ -1,5 +1,3 @@
-/* Task1.css */
-
 body {
   margin: 0;
   padding: 0;
@@ -7,7 +5,7 @@ body {
   background-image: linear-gradient(10deg , #fbc2eb, #7da5ea);
   background-repeat: no-repeat; 
   max-height: 300vh;
-  min-height: 100vh;/* Light background color */
+  min-height: 100vh;
 }
 
 .game {
@@ -23,11 +21,11 @@ body {
 
 h1 {
   text-align: center;
-  color: #141514; /* Title color */
+  color: #141514; 
 }
 
 h2 {
-  color: #141514; /* Section title color */
+  color: #141514;
   margin-top: 30px;
 }
 
