@@ -60,4 +60,8 @@ body {
   .unplanned-tasks {
     grid-column: 1; /* Full width on mobile */
   }
+   .unplanned-tasks li,
+.block li {
+  touch-action: manipulation;
+}
 }
