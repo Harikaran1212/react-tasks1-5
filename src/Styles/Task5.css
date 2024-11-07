@@ -62,6 +62,7 @@ body {
   }
    .unplanned-tasks li,
 .block li {
+  position:absolute;
   touch-action: manipulation;
 }
 }
