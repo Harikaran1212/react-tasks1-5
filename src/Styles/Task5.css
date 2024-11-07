@@ -5,7 +5,7 @@ body {
   background-image: linear-gradient(10deg , #fbc2eb, #7da5ea);
   background-repeat: no-repeat; 
   max-height: 250vh;
-  min-height: 100vh; /* Light background color */
+  min-height: 100vh; 
 }
 
 .task5 {
@@ -14,10 +14,10 @@ body {
 
 .blocks-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns in a row */
-  grid-template-rows: auto auto auto; /* Three rows */
-  grid-gap: 20px; /* Gap between grid items */
-  justify-items: center; /* Center the items horizontally */
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto; 
+  grid-gap: 20px; 
+  justify-items: center; 
 }
 
 .block {
@@ -31,8 +31,8 @@ body {
   padding: 20px;
   border: 2px solid #ddd;
   min-height: 200px;
-  grid-column: 2 / 3; /* Positioning it in the center (second column) */
-  grid-row: 3 / 4; /* Third row */
+  grid-column: 2 / 3; 
+  grid-row: 3 / 4; 
 }
 
 .unplanned-tasks ul,
@@ -51,18 +51,17 @@ body {
   cursor: grab;
 }
 
-/* Mobile view adjustments */
+
 @media screen and (max-width: 600px) {
   .blocks-container {
-    grid-template-columns: 1fr; /* Stack items in a single column */
+    grid-template-columns: 1fr; 
   }
 
   .unplanned-tasks {
-    grid-column: 1; /* Full width on mobile */
+    grid-column: 1; 
   }
    .unplanned-tasks li,
 .block li {
-  position:absolute;
   touch-action: manipulation;
 }
 }
