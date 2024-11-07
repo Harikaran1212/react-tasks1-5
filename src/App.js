@@ -12,6 +12,7 @@ function App() {
        <div className="App">
       <h1>React Tasks</h1>
       <nav>
+        <Link to="/src/App.js"><button>Home</button></Link>
         <Link to="/task1"><button>Task 1</button></Link>
         <Link to="/task2"><button>Task 2</button></Link>
         <Link to="/task3"><button>Task 3</button></Link>
