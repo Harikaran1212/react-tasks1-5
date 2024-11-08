@@ -5,6 +5,7 @@ function App() {
   const records = ['John', 'Jane', 'Jack', 'Jill'];
   const [isVisible, setIsVisible] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+   const [isSumButtonDisabled, setIsSumButtonDisabled] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const [components, setComponents] = useState([]);
   const [num1, setNum1] = useState(0);
@@ -76,7 +77,11 @@ function App() {
         onChange={(e) => setNum2(e.target.value)}
         placeholder="Number 2"
       />
-      <button onClick={handleSum}>Calculate Sum</button>
+      <input
+        type="checkbox"
+        onChange={(e) => setIsSumButtonDisabled(!e.target.checked)}
+      />
+      <button  disabled={isSumButtonDisabled} onClick={handleSum}>Calculate Sum</button>
       <p>Sum: {sum}</p>
     </div>
     </div>
