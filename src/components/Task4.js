@@ -39,7 +39,13 @@ function Task4() {
   };
 
   const filteredData = data
-    .filter((d) => d.customer.toLowerCase().includes(query.toLowerCase()))
+  .filter((d) => {
+    return (
+      d.customer.toLowerCase().includes(query.toLowerCase()) ||
+      d.orders.toString().includes(query) ||
+      d.totalSpent.toFixed(2).includes(query)
+    );
+  })
     .sort((a, b) => {
       if (sortOrder === 'asc') {
         return a[sortKey] > b[sortKey] ? 1 : -1;
@@ -54,7 +60,7 @@ function Task4() {
       <input
         type="text"
         className="search-bar"
-        placeholder="Search customers..."
+        placeholder="Search customers, orders, or total spent..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
