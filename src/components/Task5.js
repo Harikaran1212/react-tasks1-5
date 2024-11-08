@@ -13,28 +13,49 @@ function Task5() {
     ]
   });
 
- 
-  const onDragStart = (e, task, sourceBlock) => {
+
+  const [draggedTask, setDraggedTask] = useState(null);
+  const [sourceBlock, setSourceBlock] = useState(null);
+
+
+  const onDragStart = (e, task, block) => {
     e.dataTransfer.setData('task', task);
-    e.dataTransfer.setData('sourceBlock', sourceBlock); 
+    e.dataTransfer.setData('sourceBlock', block); 
   };
 
   const onDrop = (e, destinationBlock) => {
     const task = e.dataTransfer.getData('task');
     const sourceBlock = e.dataTransfer.getData('sourceBlock');
-    
+
     if (sourceBlock !== destinationBlock) {
-      
       setBlocks((prev) => ({
         ...prev,
         [destinationBlock]: [...prev[destinationBlock], task],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task), 
+        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task),
       }));
     }
   };
 
   const allowDrop = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+  };
+
+  
+  const onTouchStart = (task, block) => {
+    setDraggedTask(task);
+    setSourceBlock(block);
+  };
+
+  const onTouchEnd = (destinationBlock) => {
+    if (sourceBlock !== destinationBlock) {
+      setBlocks((prev) => ({
+        ...prev,
+        [destinationBlock]: [...prev[destinationBlock], draggedTask],
+        [sourceBlock]: prev[sourceBlock].filter((t) => t !== draggedTask),
+      }));
+    }
+    setDraggedTask(null); 
+    setSourceBlock(null); 
   };
 
   return (
@@ -47,8 +68,9 @@ function Task5() {
           <div
             key={block}
             className="block"
-            onDrop={(e) => onDrop(e, block)}
-            onDragOver={allowDrop}
+            onDrop={(e) => onDrop(e, block)}    
+            onDragOver={allowDrop}               
+            onTouchEnd={() => onTouchEnd(block)} 
           >
             <h3>{block}</h3>
             <ul>
@@ -57,6 +79,7 @@ function Task5() {
                   key={idx}
                   draggable
                   onDragStart={(e) => onDragStart(e, task, block)} 
+                  onTouchStart={() => onTouchStart(task, block)}   
                 >
                   {task}
                 </li>
