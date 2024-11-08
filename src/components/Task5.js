@@ -13,56 +13,28 @@ function Task5() {
     ]
   });
 
-  // State to track the task being dragged or touched
-  const [draggedTask, setDraggedTask] = useState(null);
-  const [sourceBlock, setSourceBlock] = useState(null);
-
-  // Handle drag start (Desktop)
-  const onDragStart = (e, task, block) => {
+  // Drag Handlers
+  const onDragStart = (e, task, sourceBlock) => {
     e.dataTransfer.setData('task', task);
-    e.dataTransfer.setData('sourceBlock', block);
+    e.dataTransfer.setData('sourceBlock', sourceBlock); // Store the source block information
   };
 
-  // Handle drop (Desktop)
   const onDrop = (e, destinationBlock) => {
     const task = e.dataTransfer.getData('task');
     const sourceBlock = e.dataTransfer.getData('sourceBlock');
-
+    
     if (sourceBlock !== destinationBlock) {
+      // Update the destination block
       setBlocks((prev) => ({
         ...prev,
         [destinationBlock]: [...prev[destinationBlock], task],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task),
+        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task), // Remove task from the source block
       }));
     }
   };
 
   const allowDrop = (e) => {
-    e.preventDefault();
-  };
-
-  // Mobile Handlers (Touch events)
-  const onTouchStart = (task, block) => {
-    setDraggedTask(task);
-    setSourceBlock(block);
-  };
-
-  const onTouchMove = (e) => {
-    e.preventDefault(); // Prevent default behavior while moving
-    // Optionally: You can add some visual feedback for touch movement here
-  };
-
-  const onTouchEnd = (destinationBlock) => {
-    if (sourceBlock && draggedTask && sourceBlock !== destinationBlock) {
-      setBlocks((prev) => ({
-        ...prev,
-        [destinationBlock]: [...prev[destinationBlock], draggedTask],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== draggedTask),
-      }));
-    }
-    // Reset the state after dropping
-    setDraggedTask(null);
-    setSourceBlock(null);
+    e.preventDefault(); // Enable drop by preventing default behavior
   };
 
   return (
@@ -75,10 +47,8 @@ function Task5() {
           <div
             key={block}
             className="block"
-            onDrop={(e) => onDrop(e, block)}       // Desktop drop handler
-            onDragOver={allowDrop}                 // Desktop drag over handler
-            onTouchMove={onTouchMove}              // Mobile touch move handler
-            onTouchEnd={() => onTouchEnd(block)}   // Mobile touch end handler
+            onDrop={(e) => onDrop(e, block)}
+            onDragOver={allowDrop}
           >
             <h3>{block}</h3>
             <ul>
@@ -86,8 +56,7 @@ function Task5() {
                 <li
                   key={idx}
                   draggable
-                  onDragStart={(e) => onDragStart(e, task, block)} // Desktop drag start
-                  onTouchStart={() => onTouchStart(task, block)}   // Mobile touch start
+                  onDragStart={(e) => onDragStart(e, task, block)} // Track the source block
                 >
                   {task}
                 </li>
