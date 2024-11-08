@@ -2,37 +2,59 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-image: linear-gradient(10deg , #fbc2eb, #7da5ea);
-  background-repeat: no-repeat; 
-  max-height: 250vh;
-  min-height: 100vh; 
+  background-image: linear-gradient(135deg, #fbc2eb, #7da5ea);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 .task5 {
   padding: 20px;
+  text-align: center;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .blocks-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto auto; 
-  grid-gap: 20px; 
-  justify-items: center; 
+  grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+  grid-gap: 20px; /* Space between columns */
+  justify-items: center; /* Center each block horizontally */
 }
 
 .block {
   width: 200px;
-  padding: 10px;
+  padding: 15px;
+  border-radius: 8px;
   border: 2px solid #ddd;
+  background-color: #f0f4f8;
   min-height: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.block:hover {
+  background-color: #e3e9f1;
+}
+
+.block h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #555;
 }
 
 .unplanned-tasks {
-  padding: 20px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
   border: 2px solid #ddd;
+  background-color: #f0f4f8;
   min-height: 200px;
-  grid-column: 2 / 3; 
-  grid-row: 3 / 4; 
+  grid-column: 2 / 3; /* Center in the second column */
+  grid-row: 3 / 4; /* Positioned in the third row */
 }
 
 .unplanned-tasks ul,
@@ -44,24 +66,50 @@ body {
 .unplanned-tasks li,
 .block li {
   color: white;
-  margin: 5px 0;
-  padding: 5px;
-  background-image: conic-gradient( #fbc2eb, #7da5ea, #fbc2eb);
-  border: 2px solid #fdfafa;
+  margin: 8px 0;
+  padding: 10px;
+  background-image: conic-gradient(#fbc2eb, #7da5ea, #fbc2eb);
+  border-radius: 5px;
   cursor: grab;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.unplanned-tasks li:hover,
+.block li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
+.unplanned-tasks li:active,
+.block li:active {
+  cursor: grabbing;
+}
+
+.unplanned-tasks li,
+.block li {
+  border: 2px solid #fff;
+}
+
+/* Mobile view adjustments */
 @media screen and (max-width: 600px) {
   .blocks-container {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr; /* Stacks blocks in a single column on mobile */
+    grid-gap: 15px;
+  }
+
+  .block,
+  .unplanned-tasks {
+    width: 90%; /* Full width with some padding */
+    margin: 0 auto; /* Center items horizontally */
   }
 
   .unplanned-tasks {
-    grid-column: 1; 
+    grid-column: 1 / 2; /* Takes full width on mobile */
+    grid-row: auto; /* Adjust row for mobile */
   }
-   .unplanned-tasks li,
-.block li {
-  touch-action: manipulation;
-}
+
+  .unplanned-tasks li,
+  .block li {
+    touch-action: manipulation;
+  }
 }
