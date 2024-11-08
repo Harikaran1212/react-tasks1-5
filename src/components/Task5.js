@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Styles/Task5.css'; // Import specific CSS for Task 5
+import '../Styles/Task5.css'; 
 
 function Task5() {
   const [blocks, setBlocks] = useState({
@@ -13,10 +13,10 @@ function Task5() {
     ]
   });
 
-  // Drag Handlers
+ 
   const onDragStart = (e, task, sourceBlock) => {
     e.dataTransfer.setData('task', task);
-    e.dataTransfer.setData('sourceBlock', sourceBlock); // Store the source block information
+    e.dataTransfer.setData('sourceBlock', sourceBlock); 
   };
 
   const onDrop = (e, destinationBlock) => {
@@ -24,24 +24,24 @@ function Task5() {
     const sourceBlock = e.dataTransfer.getData('sourceBlock');
     
     if (sourceBlock !== destinationBlock) {
-      // Update the destination block
+      
       setBlocks((prev) => ({
         ...prev,
         [destinationBlock]: [...prev[destinationBlock], task],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task), // Remove task from the source block
+        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task), 
       }));
     }
   };
 
   const allowDrop = (e) => {
-    e.preventDefault(); // Enable drop by preventing default behavior
+    e.preventDefault(); 
   };
 
   return (
     <div className="task5">
       <h2>Task 5: Drag and Drop Task List</h2>
 
-      {/* Render all blocks dynamically */}
+      
       <div className="blocks-container">
         {Object.keys(blocks).map((block) => (
           <div
@@ -56,7 +56,7 @@ function Task5() {
                 <li
                   key={idx}
                   draggable
-                  onDragStart={(e) => onDragStart(e, task, block)} // Track the source block
+                  onDragStart={(e) => onDragStart(e, task, block)} 
                 >
                   {task}
                 </li>
