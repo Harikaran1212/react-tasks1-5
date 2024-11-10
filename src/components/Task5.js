@@ -13,18 +13,18 @@ function Task5() {
     ]
   });
 
- 
+
   const onDragStart = (e, task, sourceBlock) => {
     e.dataTransfer.setData('task', task);
     e.dataTransfer.setData('sourceBlock', sourceBlock); 
   };
 
+ 
   const onDrop = (e, destinationBlock) => {
     const task = e.dataTransfer.getData('task');
     const sourceBlock = e.dataTransfer.getData('sourceBlock');
     
     if (sourceBlock !== destinationBlock) {
-      
       setBlocks((prev) => ({
         ...prev,
         [destinationBlock]: [...prev[destinationBlock], task],
@@ -37,11 +37,35 @@ function Task5() {
     e.preventDefault(); 
   };
 
+
+  const onTouchStart = (e, task, sourceBlock) => {
+    e.target.dataset.task = task;
+    e.target.dataset.sourceBlock = sourceBlock;
+  };
+
+  
+  const onTouchMove = (e) => {
+    e.preventDefault();
+  };
+
+
+  const onTouchEnd = (e, destinationBlock) => {
+    const task = e.target.dataset.task;
+    const sourceBlock = e.target.dataset.sourceBlock;
+    
+    if (sourceBlock !== destinationBlock) {
+      setBlocks((prev) => ({
+        ...prev,
+        [destinationBlock]: [...prev[destinationBlock], task],
+        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task),
+      }));
+    }
+  };
+
   return (
     <div className="task5">
       <h2>Task 5: Drag and Drop Task List</h2>
 
-      
       <div className="blocks-container">
         {Object.keys(blocks).map((block) => (
           <div
@@ -57,6 +81,9 @@ function Task5() {
                   key={idx}
                   draggable
                   onDragStart={(e) => onDragStart(e, task, block)} 
+                  onTouchStart={(e) => onTouchStart(e, task, block)} 
+                  onTouchMove={onTouchMove} 
+                  onTouchEnd={(e) => onTouchEnd(e, block)} 
                 >
                   {task}
                 </li>
