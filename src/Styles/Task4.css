@@ -37,3 +37,28 @@ body {
   margin-bottom: 10px;
   width: 100%;
 }
+
+@media (max-width: 360px) {
+  
+  .datagrid-container {
+    padding: 15px;
+  }
+
+
+  .table th, .table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  
+  .search-bar {
+    font-size: 16px;
+  }
+}
