@@ -1,98 +1,88 @@
-import React, { useState } from 'react';
-import '../Styles/Task5.css'; 
+import React, { useState } from 'react'; 
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'; 
+import '../Styles/Task5.css';
+
+
+const initialTasks = Array.from({ length: 10 }, (_, i) => ({
+  id: `task-${i + 1}`,
+  content: `Test Task ${i + 1}`,
+}));
+
+
+const initialColumns = {
+  today: { title: "Today", items: [] },
+  tomorrow: { title: "Tomorrow", items: [] },
+  thisWeek: { title: "This Week", items: [] },
+  nextWeek: { title: "Next Week", items: [] },
+  unplanned: { title: "Unplanned", items: initialTasks },
+};
 
 function Task5() {
-  const [blocks, setBlocks] = useState({
-    Today: [],
-    Tomorrow: [],
-    ThisWeek: [],
-    NextWeek: [],
-    Unplanned: [
-      'Test Task 1', 'Test Task 2', 'Test Task 3', 'Test Task 4', 'Test Task 5', 
-      'Test Task 6', 'Test Task 7', 'Test Task 8', 'Test Task 9', 'Test Task 10'
-    ]
-  });
+  const [columns, setColumns] = useState(initialColumns);
 
 
-  const onDragStart = (e, task, sourceBlock) => {
-    e.dataTransfer.setData('task', task);
-    e.dataTransfer.setData('sourceBlock', sourceBlock); 
-  };
-
- 
-  const onDrop = (e, destinationBlock) => {
-    const task = e.dataTransfer.getData('task');
-    const sourceBlock = e.dataTransfer.getData('sourceBlock');
-    
-    if (sourceBlock !== destinationBlock) {
-      setBlocks((prev) => ({
-        ...prev,
-        [destinationBlock]: [...prev[destinationBlock], task],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task), 
-      }));
-    }
-  };
-
-  const allowDrop = (e) => {
-    e.preventDefault(); 
-  };
-
-
-  const onTouchStart = (e, task, sourceBlock) => {
-    e.target.dataset.task = task;
-    e.target.dataset.sourceBlock = sourceBlock;
-  };
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
 
   
-  const onTouchMove = (e) => {
-    e.preventDefault();
-  };
-
-
-  const onTouchEnd = (e, destinationBlock) => {
-    const task = e.target.dataset.task;
-    const sourceBlock = e.target.dataset.sourceBlock;
-    
-    if (sourceBlock !== destinationBlock) {
-      setBlocks((prev) => ({
-        ...prev,
-        [destinationBlock]: [...prev[destinationBlock], task],
-        [sourceBlock]: prev[sourceBlock].filter((t) => t !== task),
-      }));
+    if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+      return;
     }
+
+
+    const sourceColumn = columns[source.droppableId];
+    const destColumn = columns[destination.droppableId];
+    const sourceItems = [...sourceColumn.items];
+    const destItems = [...destColumn.items];
+
+   
+    const [movedItem] = sourceItems.splice(source.index, 1);
+    destItems.splice(destination.index, 0, movedItem);
+
+  
+    setColumns({
+      ...columns,
+      [source.droppableId]: { ...sourceColumn, items: sourceItems },
+      [destination.droppableId]: { ...destColumn, items: destItems },
+    });
   };
 
   return (
-    <div className="task5">
-      <h2>Task 5: Drag and Drop Task List</h2>
-
-      <div className="blocks-container">
-        {Object.keys(blocks).map((block) => (
-          <div
-            key={block}
-            className="block"
-            onDrop={(e) => onDrop(e, block)}
-            onDragOver={allowDrop}
-          >
-            <h3>{block}</h3>
-            <ul>
-              {blocks[block].map((task, idx) => (
-                <li
-                  key={idx}
-                  draggable
-                  onDragStart={(e) => onDragStart(e, task, block)} 
-                  onTouchStart={(e) => onTouchStart(e, task, block)} 
-                  onTouchMove={onTouchMove} 
-                  onTouchEnd={(e) => onTouchEnd(e, block)} 
-                >
-                  {task}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <h1 style={{ marginTop: '100px' }}>Drag & Drop Task</h1>
+      <div className="container">
+        {Object.entries(columns).map(([columnId, column]) => (
+          <Droppable key={columnId} droppableId={columnId}>
+            {(provided) => (
+              <div
+                className="column"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <h3>{column.title}</h3>
+                <div className="task-list">
+                  {column.items.map((task, index) => (
+                    <Draggable key={task.id} draggableId={task.id} index={index}>
+                      {(provided) => (
+                        <div
+                          className="task-item"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          {task.content}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              </div>
+            )}
+          </Droppable>
         ))}
       </div>
-    </div>
+    </DragDropContext>
   );
 }
 
